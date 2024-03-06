@@ -9,9 +9,8 @@ const login = async (req, res) => {
             process.env.JWT_SECRET_KEY
         )
         const verifyUser = await User.findOne({ schoolId: schoolId })
-
         if (verifyUser !== null) {
-            return req.json({ user: verifyUser, token: accessToken })
+            return res.json({ user: verifyUser, token: accessToken })
         }
 
         const user = new User({ fullName: fullName, schoolId: schoolId })
@@ -37,6 +36,16 @@ const chairById = async (req, res) => {
     const id = req.params.id
     try {
         const chairId = await User.findOne({ chair: id })
+        res.json({ data: chairId })
+    } catch (error) {
+        res.status(500).json({ msg: "Hatalı İşlem" })
+    }
+}
+
+const chairByStudent = async (req, res) => {
+    const { studentId } = req.user
+    try {
+        const chairId = await User.findOne({ studentId: studentId })
         res.json({ data: chairId })
     } catch (error) {
         res.status(500).json({ msg: "Hatalı İşlem" })
@@ -74,5 +83,6 @@ module.exports = {
     allChair,
     chairById,
     selectChair,
-    deleteChair
+    deleteChair,
+    chairByStudent
 }

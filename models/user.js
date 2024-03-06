@@ -9,11 +9,13 @@ const userSchema = mongoose.Schema({
     schoolId: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        unique: true
     },
     chair: {
         type: String,
-        trim: true
+        trim: true,
+        unique: true
     }
 }, { timestamps: true })
 
