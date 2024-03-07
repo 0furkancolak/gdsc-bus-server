@@ -6,10 +6,8 @@ const auth = require("../middlewares/auth")
 router.post("/login", controller.login)
 
 //Koltuk işlemleri  
-router.get("/all-chair", auth, controller.allChair)
+router.get("/all-chair",  controller.allChair)
 router.get("/chair-by-id/:id", auth, controller.chairById)
-router.get("/chair-by-student", auth, controller.chairByStudent)
 router.post("/select-chair", auth, controller.selectChair)
-router.post("/delete-chair", auth, controller.deleteChair)
 
 module.exports = router

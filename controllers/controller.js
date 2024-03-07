@@ -8,17 +8,20 @@ const login = async (req, res) => {
             { schoolId: schoolId, fullName: fullName },
             process.env.JWT_SECRET_KEY
         )
-        const verifyUser = await User.findOne({ schoolId: schoolId })
-        if (verifyUser !== null) {
-            return res.status(200).json({ user: verifyUser, token: accessToken })
+
+        // Kullanıcıyı bul
+        const existingUser = await User.findOne({ schoolId: schoolId })
+        if (existingUser) {
+            return res.status(200).json({ user: existingUser, token: accessToken })
         }
 
-        const user = new User({ fullName: fullName, schoolId: schoolId })
-        await user.save()
-        
-        res.status(201).json({ user: user, token: accessToken })
+        // Kullanıcı yoksa yeni kullanıcı oluştur ve kaydet
+        const newUser = new User({ fullName: fullName, schoolId: schoolId })
+        const savedUser = await newUser.save()
+        res.status(201).json({ user: savedUser, token: accessToken })
 
     } catch (error) {
+        console.error('Kullanıcı kaydedilirken bir hata oluştu:', error)
         res.status(500).json({ msg: "Hatalı İşlem" })
     }
 }
@@ -43,15 +46,6 @@ const chairById = async (req, res) => {
     }
 }
 
-const chairByStudent = async (req, res) => {
-    const { studentId } = req.user
-    try {
-        const chairId = await User.findOne({ studentId: studentId })
-        res.json({ data: chairId })
-    } catch (error) {
-        res.status(500).json({ msg: "Hatalı İşlem" })
-    }
-}
 
 const selectChair = async (req, res) => {
     const { chairId } = req.body
@@ -68,22 +62,11 @@ const selectChair = async (req, res) => {
     }
 }
 
-const deleteChair = async (req, res) => {
-    const { chairId } = req.body
-    const { schoolId } = req.user
-    try {
-        const data = await User.findOneAndUpdate({ schoolId: schoolId }, { chair: null })
-        res.json({ data: data })
-    } catch (error) {
-        res.status(500).json({ msg: "Hatalı İşlem" })
-    }
-}
+
 
 module.exports = {
     login,
     allChair,
     chairById,
-    selectChair,
-    deleteChair,
-    chairByStudent
+    selectChair
 }

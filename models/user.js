@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
     chair: {
         type: String,
         trim: true,
-        unique: true
+        default: "0"
     }
 }, { collection: "users", timestamps: true })
 
