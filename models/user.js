@@ -17,7 +17,8 @@ const userSchema = mongoose.Schema({
         trim: true,
         unique: true
     }
-}, { timestamps: true })
+}, { collection: "users", timestamps: true })
 
 const User = mongoose.model("User", userSchema);
+
 module.exports = User

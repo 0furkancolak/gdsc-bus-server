@@ -10,12 +10,13 @@ const login = async (req, res) => {
         )
         const verifyUser = await User.findOne({ schoolId: schoolId })
         if (verifyUser !== null) {
-            return res.json({ user: verifyUser, token: accessToken })
+            return res.status(200).json({ user: verifyUser, token: accessToken })
         }
 
         const user = new User({ fullName: fullName, schoolId: schoolId })
         await user.save()
-        res.json({ user: user, token: accessToken })
+        
+        res.status(201).json({ user: user, token: accessToken })
 
     } catch (error) {
         res.status(500).json({ msg: "Hatalı İşlem" })
