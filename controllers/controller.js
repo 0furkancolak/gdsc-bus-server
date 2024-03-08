@@ -62,11 +62,22 @@ const selectChair = async (req, res) => {
     }
 }
 
+const editName = async (req, res) => {
+    const { fullName } = req.body
+    const { schoolId } = req.user
+    try {
+        const data = await User.findOneAndUpdate({ schoolId: schoolId }, { fullName: fullName })
+        res.json({ data: data })
+    } catch (error) {
+        res.status(500).json({ msg: "Hatalı İşlem" })
+    }
+}
 
 
 module.exports = {
     login,
     allChair,
     chairById,
-    selectChair
+    selectChair,
+    editName
 }

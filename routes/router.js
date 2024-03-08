@@ -9,5 +9,6 @@ router.post("/login", controller.login)
 router.get("/all-chair",  controller.allChair)
 router.get("/chair-by-id/:id", auth, controller.chairById)
 router.post("/select-chair", auth, controller.selectChair)
+router.post("/edit-name", auth, controller.editName)
 
 module.exports = router
